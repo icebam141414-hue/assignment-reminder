@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Home | Assignment Reminder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f3f4f6;
+      color: #222;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      background: #2f2f2f;
+      color: #fff;
+      padding: 20px 40px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 22px;
+      margin: 0;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: #fff;
+      padding: 60px 40px;
+    }
+
+    .hero-content {
+      max-width: 1200px;
+      margin: auto;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .hero h2 {
+      font-size: 36px;
+      margin: 0 0 10px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      opacity: 0.9;
+      margin: 0;
+    }
+
+    /* ===== LINE BUTTON ===== */
+    .line-btn {
+      background: #06c755;
+      color: #fff;
+      text-decoration: none;
+
+      padding: 12px 22px;
+      border-radius: 999px;
+
+      font-size: 14px;
+      font-weight: 600;
+
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      transition: 0.25s ease;
+      white-space: nowrap;
+    }
+
+    .line-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+    }
+
+    /* ===== DASHBOARD ===== */
+    .dashboard {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 0 40px;
+
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 30px;
+
+      text-decoration: none;
+      color: #222;
+
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      transition: 0.25s ease;
+
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .icon {
+      font-size: 42px;
+    }
+
+    .card h3 {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    .card p {
+      font-size: 14px;
+      opacity: 0.7;
+      margin: 0;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 14px;
+      opacity: 0.6;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .hero-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .line-btn {
+        margin-top: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <h1>หน้าหลัก</h1>
+    <div>👤 ผู้ใช้งาน</div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div>
+        <h2>assignment-reminder</h2>
+        <p>จัดการงาน แจ้งเตือนอัตโนมัติ ไม่พลาดทุกเดดไลน์</p>
+      </div>
+
+      <!-- ปุ่ม LINE อยู่ขวา -->
+      <a href="https://lin.ee/XXXXXXX" target="_blank" class="line-btn">
+        💚 เพิ่มเพื่อน LINE
+      </a>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section class="dashboard">
+
+    <a href="add-task2.html" class="card">
+      <div class="icon">➕</div>
+      <h3>เพิ่มงานใหม่</h3>
+      <p>เพิ่มงานและกำหนดวันส่ง</p>
+    </a>
+
+    <a href="tasks2.html" class="card">
+      <div class="icon">📋</div>
+      <h3>รายการงาน</h3>
+      <p>ดู แก้ไข และลบงาน</p>
+    </a>
+
+    <a href="summary2.html" class="card">
+      <div class="icon">📊</div>
+      <h3>สรุปงานทั้งหมด</h3>
+      <p>ดูภาพรวมสถานะงานทั้งหมด</p>
+    </a>
+
+  </section>
+
+  <footer>
+    © 2026 Assignment Reminder
+  </footer>
+
+</body>
+</html>

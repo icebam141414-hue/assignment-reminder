@@ -1,0 +1,81 @@
+.dashboard-zone {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 40px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 30px;
+}
+
+.zone-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 30px;
+
+  text-decoration: none;
+  color: #222;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: 0.25s ease;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.zone-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.zone-icon {
+  font-size: 42px;
+}
+
+.zone-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.zone-card p {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+
+/* จัด hero ให้ซ้าย-ขวา */
+.hero-content {
+  max-width: 1200px;
+  margin: auto;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+
+/* ปุ่ม LINE */
+.line-btn {
+  background: #06c755;
+  color: #fff;
+  text-decoration: none;
+
+  padding: 12px 20px;
+  border-radius: 999px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  transition: 0.25s ease;
+}
+
+.line-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+}
