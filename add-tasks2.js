@@ -1,7 +1,5 @@
-// เช็กว่าไฟล์ JS ถูกโหลดจริง
 console.log("✅ add-tasks2.js loaded");
 
-// รอให้ DOM โหลดเสร็จก่อน
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("addTaskForm");
 
@@ -22,33 +20,28 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // ดึงงานเก่ามา (ถ้าไม่มีจะเป็น [])
-    let tasks = [];
-    try {
-      tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    } catch (err) {
-      console.error("❌ อ่าน tasks ไม่ได้", err);
-      tasks = [];
-    }
-
-    // เพิ่มงานใหม่
     const newTask = {
-      subject,
-      task,
-      time,
-      createdAt: Date.now()
+      subject: subject,
+      title: task,
+      dueDate: time
     };
 
-    tasks.push(newTask);
-
-    // บันทึกกลับเข้า localStorage
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-
-    console.log("📦 tasks ล่าสุด:", tasks);
-
-    alert("บันทึกงานเรียบร้อย ✅");
-
-    // ล้างฟอร์ม
-    form.reset();
+    fetch("http://localhost:3000/add-task", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newTask)
+    })
+    .then(res => res.text())
+    .then(data => {
+      console.log("📥 server:", data);
+      alert("บันทึกงานเรียบร้อย ✅");
+      form.reset();
+    })
+    .catch(err => {
+      console.error(err);
+      alert("❌ เพิ่มงานไม่สำเร็จ");
+    });
   });
 });
