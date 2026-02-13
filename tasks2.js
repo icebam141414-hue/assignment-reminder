@@ -1,14 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
   const taskList = document.getElementById("taskList");
 
-  function getTasks() {
-    return JSON.parse(localStorage.getItem("tasks") || "[]");
+  // =============================
+  // ดึงงานจาก SERVER
+  // =============================
+  async function getTasks() {
+    try {
+      const res = await fetch("http://localhost:3000/tasks");
+      return await res.json();
+    } catch (err) {
+      console.error("❌ ดึงงานไม่ได้", err);
+      return [];
+    }
   }
 
-  function saveTasks(tasks) {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }
-
+  // =============================
+  // ดูสถานะเวลา (สี)
+  // =============================
   function getTaskStatus(dueTime) {
     const now = new Date();
     const due = new Date(dueTime);
@@ -19,11 +27,14 @@ document.addEventListener("DOMContentLoaded", () => {
     return "task-green";
   }
 
-  function renderTasks() {
-    const tasks = getTasks();
+  // =============================
+  // แสดงผล
+  // =============================
+  async function renderTasks() {
+    const tasks = await getTasks();
     taskList.innerHTML = "";
 
-    if (tasks.length === 0) {
+    if (!tasks || tasks.length === 0) {
       taskList.innerHTML = "<p>📭 ยังไม่มีงาน</p>";
       return;
     }
@@ -31,14 +42,14 @@ document.addEventListener("DOMContentLoaded", () => {
     tasks.forEach((task, index) => {
       const div = document.createElement("div");
 
-      const statusClass = getTaskStatus(task.time);
+      const statusClass = getTaskStatus(task.dueDate);
       div.className = `task-card ${statusClass}`;
 
       div.innerHTML = `
         <div class="task-info">
           <strong>${task.subject}</strong>
-          <p>${task.task}</p>
-          <p>⏰ ${new Date(task.time).toLocaleString()}</p>
+          <p>${task.title}</p>
+          <p>⏰ ${new Date(task.dueDate).toLocaleString()}</p>
         </div>
 
         <div class="task-actions">
@@ -58,38 +69,92 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  window.completeTask = function (index) {
-    const tasks = getTasks();
-    tasks[index].completed = true;
-    saveTasks(tasks);
+  // =============================
+  // ส่งงานแล้ว
+  // =============================
+  window.completeTask = async function (index) {
+    await fetch(`http://localhost:3000/tasks/${index}/complete`, {
+      method: "PUT",
+    });
     renderTasks();
   };
 
-  window.deleteTask = function (index) {
-    const tasks = getTasks();
+  // =============================
+  // ลบ
+  // =============================
+  window.deleteTask = async function (index) {
     if (!confirm("ต้องการลบงานนี้ใช่ไหม?")) return;
 
-    tasks.splice(index, 1);
-    saveTasks(tasks);
+    await fetch(`http://localhost:3000/tasks/${index}`, {
+      method: "DELETE",
+    });
+
     renderTasks();
   };
 
-  window.editTask = function (index) {
-    const tasks = getTasks();
+  // =============================
+  // แก้ไข
+  // =============================
+  window.editTask = async function (index) {
+    const tasks = await getTasks();
     const task = tasks[index];
 
     const newSubject = prompt("แก้ไขชื่อวิชา", task.subject);
     if (newSubject === null) return;
 
-    const newTask = prompt("แก้ไขชื่องาน", task.task);
-    if (newTask === null) return;
+    const newTitle = prompt("แก้ไขชื่องาน", task.title);
+    if (newTitle === null) return;
 
-    task.subject = newSubject;
-    task.task = newTask;
+    await fetch(`http://localhost:3000/tasks/${index}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        subject: newSubject,
+        title: newTitle,
+      }),
+    });
 
-    saveTasks(tasks);
     renderTasks();
   };
 
   renderTasks();
 });
+
+
+// =============================
+// 🔔 ระบบแจ้งเตือนเมื่อถึงเวลา
+// =============================
+const notifiedTasks = new Set();
+
+async function checkDueTasks() {
+  try {
+    const res = await fetch("http://localhost:3000/tasks");
+    const tasks = await res.json();
+
+    const now = new Date();
+
+    tasks.forEach((task, index) => {
+      if (task.completed) return;
+
+      const due = new Date(task.dueDate);
+
+      // ถ้าเลยเวลาแล้ว และยังไม่เคยแจ้งเตือน
+      if (due <= now && !notifiedTasks.has(index)) {
+        notifiedTasks.add(index);
+
+        alert(`🔔 ถึงเวลาส่งงาน!\nวิชา: ${task.subject}\nงาน: ${task.title}`);
+      }
+    });
+  } catch (err) {
+    console.error("❌ เช็คเวลาไม่ได้", err);
+  }
+}
+
+// เช็คทุก 30 วิ
+setInterval(checkDueTasks, 30000);
+
+// เปิดหน้าเว็บ → เช็คทันที 1 รอบ
+checkDueTasks();
+
